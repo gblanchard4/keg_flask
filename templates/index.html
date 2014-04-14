@@ -13,9 +13,9 @@ span {font-weight: bold;}
 
 <script type=text/javascript>
 	$(
-	function temperature()
+	function thermostat()
 	{
-		$.getJSON('/_temperature', function(data)
+		$.getJSON('/_thermostat', function(data)
 			{
 				$("#temperature").text(data.temperature);
 				setTimeout(function(){temperature();},500);
