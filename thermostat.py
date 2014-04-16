@@ -31,7 +31,7 @@ def get_state():
 	return str(GPIO.input(power_pin))	
 
 def main():
-	
+
 	try:
 		# PowerSwitch Tail II Pin
 		power_pin = 23
@@ -41,16 +41,15 @@ def main():
 		GPIO.setup(power_pin, GPIO.OUT, initial=GPIO.LOW)
 
 	except KeyboardInterrupt:
-	# here you put any code you want to run before the program   
-	# exits when you press CTRL+C  
-	print "\n", counter # print value of counter  
-	              except:  
-	                  # this catches ALL other exceptions including errors.  
-	                      # You won't get any error messages for debugging  
-	                          # so only use it once your code is working  
-	                              print "Other error or exception occurred!"  
-	                                
-	                                finally:  
-	                                    GPIO.cleanup() # this ensures a clean exit  
+		# here you put any code you want to run before the program   
+		# exits when you press CTRL+C  
+		print "\n", counter # print value of counter  
 	
+	except:  
+		# this catches ALL other exceptions including errors.  
+		# You won't get any error messages for debugging  
+		# so only use it once your code is working  
+		print "Other error or exception occurred!"  
 
+	finally:  
+		GPIO.cleanup() # this ensures a clean exit  
