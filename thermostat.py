@@ -5,14 +5,12 @@ Gene Blanchard
 '''
 import thermometer
 import RPi.GPIO as GPIO
+import time
 
-def thermostat():
+def thermostat(power_pin):
 
-	# Get current temperature
-	thermometer.read_temp()
-	
 	# Cast temperature to an int
-	temperature = int(float(temperature))
+	temperature = int(float(thermometer.read_temp()))
 	
 	# Optimal beer temperature is 50-55
 	beer_range = range(50,56) # 50-55F
@@ -40,16 +38,12 @@ def main():
 		# Setup the power pin, initialize off
 		GPIO.setup(power_pin, GPIO.OUT, initial=GPIO.LOW)
 
-	except KeyboardInterrupt:
-		# here you put any code you want to run before the program   
-		# exits when you press CTRL+C  
-		print "\n", counter # print value of counter  
-	
-	except:  
-		# this catches ALL other exceptions including errors.  
-		# You won't get any error messages for debugging  
-		# so only use it once your code is working  
-		print "Other error or exception occurred!"  
-
+		# Run the thermostat
+		thermostat(power_pin)
+		time.sleep(60)		
+		
 	finally:  
 		GPIO.cleanup() # this ensures a clean exit  
+
+if __name__ == "__main__":
+	main()

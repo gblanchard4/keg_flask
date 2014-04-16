@@ -1,0 +1,15 @@
+[main]
+
+# Logging
+DEBUG = 0
+
+# Target
+target_high = 55
+target_low = 50
+
+# Pin for powerswitch tail
+POWER_PIN = 23
+
+# Error Threshhold
+errorThreshold =  5
+

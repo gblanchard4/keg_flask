@@ -1,0 +1,115 @@
+#!/usr/bin/python
+
+'''
+Gene Blanchard
+'''
+import thermometer
+import RPi.GPIO as GPIO
+import time
+import os
+import datetime
+
+from daemon import Daemon
+
+# Set the woking directory where the daemon is
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+# Get the values from the config file
+config = ConfigParser.ConfigParser()
+config.read("config.txt")
+DEBUG = int(config.get('main','DEBUG'))
+target_high = float(config.get('main','target_high'))
+target_low = float(config.get('main','target_low'))
+POWER_PIN = int(config.get('main','HEATER_PIN'))
+errorThreshold = float(config.get('main','errorThreshold'))
+
+class thermostatDaemon(Daemon):
+
+	def configureGPIO(self):
+		GPIO.setmode(GPIO.BCM)
+		GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)
+		subprocess.Popen("echo " + str(POWER_PIN) + " > /sys/class/gpio/export", shell=True)
+
+	def getPowerswitchStatus(self):
+		powerswitchStatus = GPIO.input(POWER_PIN)
+		return powerswitchStatus
+
+	def turn_on(self):
+		GPIO.output(POWER_PIN, True)
+		return 1
+		
+	def turn_off(self):
+		GPIO.output(POWER_PIN, False)
+		return -1
+		
+	def run(self):
+		lastLog	= datetime.datetime.now()
+		
+		# Configure GPIO
+		self.configureGPIO()
+		
+		while True:
+		
+			# Change cwd to thermostat daemon
+			abspath = os.path.abspath(__file__)
+			dname = os.path.dirname(abspath)
+			os.chdir(dname)
+			
+			# Get the current temperature 
+			currentTemp =  float(temperature.read_temp())
+			
+			# Get the powerswitch state
+			powerswitchState = int(getPowerswitchStatus())
+		
+			file = open("status", "r")
+			targetTemp = float(file.readline())
+			mode = file.readline()
+			
+			now = datetime.datetime.now()
+			
+			
+	
+	
+		
+def thermostat(power_pin):
+
+	# Cast temperature to an int
+	temperature = int(float(thermometer.read_temp()))
+	
+	# Optimal beer temperature is 50-55
+	beer_range = range(50,56) # 50-55F
+	
+	# If the temperature is too high
+	if temperature > beer_range[-1]:
+		# Turn the fridge on
+		GPIO.output(power_pin, True)
+	
+	# If the temperature is too low
+	if temperature < beer_range[0]:
+		# Turn the fidge off
+		GPIO.output(power_pin, False)
+	
+def get_state():
+	return str(GPIO.input(power_pin))	
+
+def main():
+
+	try:
+		# PowerSwitch Tail II Pin
+		power_pin = 23
+		# Set the GPIO Mode to BCM
+		GPIO.setmode(GPIO.BCM)
+		# Setup the power pin, initialize off
+		GPIO.setup(power_pin, GPIO.OUT, initial=GPIO.LOW)
+
+		# Run the thermostat
+		thermostat(power_pin)
+		time.sleep(60)		
+		
+	finally:  
+		GPIO.cleanup() # this ensures a clean exit  
+
+if __name__ == "__main__":
+	main()
