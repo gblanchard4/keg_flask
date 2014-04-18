@@ -37,7 +37,7 @@ def thermostat():
 	if thermostat_status.rstrip() == '1':
 		thermostat_string = "ON"
 	if thermostat_status.rstrip() == '0':
-		thermostat_string = "OFF"
+		thermostat_string == "OFF"
 	return jsonify(temperature = temp_string, thermostat = thermostat_string)
 
 
