@@ -1,0 +1,10 @@
+thermostat_daemon.py:37: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)
+thermostat_daemon.py:37: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)
+thermostat_daemon.py:37: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)
+thermostat_daemon.py:37: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)
+thermostat_daemon.py:37: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(POWER_PIN, GPIO.OUT, initial=GPIO.LOW)

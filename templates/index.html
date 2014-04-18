@@ -13,12 +13,21 @@ span {font-weight: bold;}
 
 <script type=text/javascript>
 	$(
+	function temperature()
+	{
+		$.getJSON('/_temperature', function(data)
+			{
+				$("#temperature").text(data.temperature);setTimeout(function(){temperature();},500);
+			});
+	}
+	);
+	
+	$(
 	function thermostat()
 	{
-		$.getJSON('/_thermostat', function(data)
+		$.getJSON('/_temperature', function(data)
 			{
-				$("#temperature").text(data.temperature);
-				setTimeout(function(){temperature();},500);
+				$("#thermostat").text(data.thermostat);setTimeout(function(){thermostat();},500);
 			});
 	}
 	);
@@ -34,6 +43,7 @@ span {font-weight: bold;}
 	<div data-role="content">
 		<form>
 			<p>The temperature is <span id="temperature"></span></p>
+			<p>The fridge is <span id="thermostat"></span></p>
 		</form>
 	</div>
 	

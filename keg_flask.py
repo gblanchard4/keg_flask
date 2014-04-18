@@ -3,7 +3,6 @@ import datetime
 import RPi.GPIO as GPIO 
 from subprocess import check_output 
 import thermometer
-import thermostat
 
 app = Flask(__name__)
 
@@ -22,20 +21,25 @@ def hello():
 	now = datetime.datetime.now()
 	timeString = now.strftime("%Y-%m-%d %H:%M")
 	tempString = thermometer.read_temp()
-	thermostat_status =  thermostat.get_state()
-	templateData = {
-		'title' : 'HELLO!',
-		'time' : timeString,
-		'temperature' : tempString,
-		'thermostat' : thermostat_status
-		}
+	thermostat_status = open('/sys/class/gpio/gpio23/value', 'r').readline()
+	if thermostat_status.rstrip() == '1':
+		thermostat_string = "ON"
+	if thermostat_status.rstrip() == '0':
+		thermostat_string == "OFF"
+	print thermostat_string
+	templateData = {'title' : 'HELLO!',	'time' : timeString,'temperature' : tempString, 'thermostat' : thermostat_string}
 	return render_template('main.html', **templateData)
 
 @app.route("/_temperature")
-def _thermostat():
+def thermostat():
 	temp_string = thermometer.read_temp()
-	thermostat_status = thermostat.get_state()
-	return jsonify(temperature = temp_string, thermostat = thermostat_status)
+	thermostat_status = open('/sys/class/gpio/gpio23/value', 'r').readline()
+	if thermostat_status.rstrip() == '1':
+		thermostat_string = "ON"
+	if thermostat_status.rstrip() == '0':
+		thermostat_string == "OFF"
+	return jsonify(temperature = temp_string, thermostat = thermostat_string)
+
 
 if __name__ == "__main__":
 	try:

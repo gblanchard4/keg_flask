@@ -12,6 +12,7 @@ import numpy as np
 import datetime
 import ConfigParser
 from daemon import Daemon
+import subprocess
 
 # Set the woking directory where the daemon is
 abspath = os.path.abspath(__file__)
@@ -49,6 +50,7 @@ class thermostatDaemon(Daemon):
 		return -1
 		
 	def run(self):
+		print "I am running"
 		lastLog	= datetime.datetime.now()
 		
 		# Configure GPIO
@@ -62,10 +64,10 @@ class thermostatDaemon(Daemon):
 			os.chdir(dname)
 			
 			# Get the current temperature 
-			current_temp =  float(temperature.read_temp())
+			current_temp =  float(thermometer.read_temp())
 						
 			# Get the powerswitch state
-			powerswitchState = int(getPowerswitchStatus())
+			powerswitchState = int(self.getPowerswitchStatus())
 		
 			now = datetime.datetime.now()
 			
@@ -79,7 +81,10 @@ class thermostatDaemon(Daemon):
 	
 
 if __name__ == "__main__":
+
+	print "Creating Daemon"
 	daemon = thermostatDaemon('thermostatDaemon.pid')
+	print "Created"
 	
 	if len(sys.argv) == 2:
 		if 'start' == sys.argv[1]:
